@@ -1,3 +1,4 @@
 banner
 .config
 openwrt_custom_build_full.sh
+openwrt_custom_build_full_copy.sh
