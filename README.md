@@ -15,6 +15,6 @@ chmod +x openwrt_custom_build.sh
 ```
 Final work:
 ```shell
-cd ~openwrt
+cd ~/openwrt
 make
 ```

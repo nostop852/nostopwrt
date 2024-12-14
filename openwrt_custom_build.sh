@@ -1,6 +1,9 @@
 #!/bin/bash
 
-# Enter home directory
+WORK_DIR=$(pwd)
+echo "work_dir  $WORK_DIR"
+
+echo "Enter home directory"
 cd ~ || exit
 
 # Check if the openwrt folder exists, and if it does, delete it
@@ -141,6 +144,8 @@ fi
 
 echo "Feeds installation successful, all customizations are complete."
 
+# echo "back work_dir $WORK_DIR"
+# cd "$WORK_DIR" || exit
 echo "Starting configuration for build requirements."
 #cp ~/nostopwrt/.config ~/openwrt
 make menuconfig
