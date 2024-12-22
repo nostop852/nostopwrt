@@ -32,11 +32,14 @@ cd ~/openwrt || exit
 # Set magic value
 curl -s https://downloads.openwrt.org/releases/23.05.4/targets/x86/64/openwrt-23.05.4-x86-64.manifest | grep kernel | awk '{print $3}' | awk -F- '{print $3}' > vermagic
 
-# Modify kernel configuration file
-# Comment out a specific line and add a new line below it
-sed -i '/grep \=\[ym\]/ { s/^/# /; a \
-cp $(TOPDIR)/vermagic $(LINUX_DIR)/.vermagic
-}' include/kernel-defaults.mk
+# Modify the kernel configuration file by commenting out a specific line and adding a new line below it.
+# Comment out the line: grep '=[ym]' $(LINUX_DIR)/.config.set | LC_ALL=C sort | $(MKHASH) md5 > $(LINUX_DIR)/.vermagic
+sed -i "/.vermagic/ s/^/# /" include/kernel-defaults.mk
+# Insert a new line below the commented line: cp $(TOPDIR)/vermagic $(LINUX_DIR)/.vermagic
+sed -i "/.vermagic/ a \cp \$(TOPDIR)/vermagic \$(LINUX_DIR)/.vermagic" include/kernel-defaults.mk
+# Insert a tab at the beginning of the new line to ensure proper indentation, otherwise the `make` command will fail
+sed -i "s/^cp \$(TOPDIR)\/vermagic \$(LINUX_DIR)\/.vermagic$/\tcp \$(TOPDIR)\/vermagic \$(LINUX_DIR)\/.vermagic/" include/kernel-defaults.mk
+
 
 # Prompt completion
 echo "Kernel configuration file has been automatically modified."
