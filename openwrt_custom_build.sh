@@ -19,7 +19,7 @@ fi
 
 # Download the official OpenWrt repository
 echo "Downloading the official OpenWrt repository..."
-git clone -b v23.05.4 --single-branch --depth=1 https://github.com/openwrt/openwrt.git
+git clone -b v23.05.5 --single-branch --depth=1 https://github.com/openwrt/openwrt.git
 
 # Check if the repository was downloaded correctly
 if [ $? -ne 0 ]; then
@@ -30,7 +30,7 @@ echo "OpenWrt repository downloaded successfully."
 
 cd ~/openwrt || exit
 # Set magic value
-curl -s https://downloads.openwrt.org/releases/23.05.4/targets/x86/64/openwrt-23.05.4-x86-64.manifest | grep kernel | awk '{print $3}' | awk -F- '{print $3}' > vermagic
+curl -s https://downloads.openwrt.org/releases/23.05.5/targets/x86/64/openwrt-23.05.5-x86-64.manifest | grep kernel | awk '{print $3}' | awk -F- '{print $3}' > vermagic
 
 # Modify the kernel configuration file by commenting out a specific line and adding a new line below it.
 # Comment out the line: grep '=[ym]' $(LINUX_DIR)/.config.set | LC_ALL=C sort | $(MKHASH) md5 > $(LINUX_DIR)/.vermagic
