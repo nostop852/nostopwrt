@@ -88,7 +88,7 @@ retry_feeds_update
 
 # Enter nostopwrt directory and copy files to source directory
 cd ~/nostopwrt || exit
-cp -r gowebdav vlmcsd ~/openwrt/feeds/packages/net/
+cp -r vlmcsd ~/openwrt/feeds/packages/net/
 cp -r ipv6-helper adbyby ~/openwrt/package/
 cp -r luci/* ~/openwrt/feeds/luci/applications
 
