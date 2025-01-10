@@ -86,8 +86,8 @@ retry_feeds_update
 
 # Remove conflicting apps
 
-# Enter nostopwrt directory and copy files to source directory
-cd ~/nostopwrt || exit
+# Enter "$WORK_DIR" directory and copy files to source directory
+cd "$WORK_DIR" || exit
 cp -r vlmcsd ~/openwrt/feeds/packages/net/
 cp -r ipv6-helper adbyby ~/openwrt/package/
 cp -r luci/* ~/openwrt/feeds/luci/applications
