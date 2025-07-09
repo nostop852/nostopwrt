@@ -30,8 +30,12 @@ echo "OpenWrt repository downloaded successfully."
 
 cd ~/openwrt || exit
 # Set magic value
-curl -s https://downloads.openwrt.org/releases/23.05.5/targets/x86/64/openwrt-23.05.5-x86-64.manifest | grep kernel | awk '{print $3}' | awk -F- '{print $3}' > vermagic
+version="23.05.5"
+manifest_url="https://downloads.openwrt.org/releases/$version/targets/x86/64/openwrt-${version}-x86-64.manifest"
+read kernel_abi vermagic <<< $(curl -s "$manifest_url" | grep "^kernel -" \
+  | awk '{ split($3, a, "-"); print a[1] "-" a[2] "-" a[3], a[3] }')
 
+echo "$vermagic" > vermagic
 # Modify the kernel configuration file by commenting out a specific line and adding a new line below it.
 # Comment out the line: grep '=[ym]' $(LINUX_DIR)/.config.set | LC_ALL=C sort | $(MKHASH) md5 > $(LINUX_DIR)/.vermagic
 sed -i "/.vermagic/ s/^/# /" include/kernel-defaults.mk
@@ -40,6 +44,11 @@ sed -i "/.vermagic/ a \cp \$(TOPDIR)/vermagic \$(LINUX_DIR)/.vermagic" include/k
 # Insert a tab at the beginning of the new line to ensure proper indentation, otherwise the `make` command will fail
 sed -i "s/^cp \$(TOPDIR)\/vermagic \$(LINUX_DIR)\/.vermagic$/\tcp \$(TOPDIR)\/vermagic \$(LINUX_DIR)\/.vermagic/" include/kernel-defaults.mk
 
+# Setting up kmod software source
+mkdir -p files/etc/opkg
+cat > files/etc/opkg/customfeeds.conf <<EOF
+src/gz kmods_custom https://downloads.openwrt.org/releases/$version/targets/x86/64/kmods/$kernel_abi
+EOF
 
 # Prompt completion
 echo "Kernel configuration file has been automatically modified."
